@@ -3,6 +3,7 @@
 ##资料
 [spring 文档](https://spring.io/guides)
 [maven仓库](https://mvnrepository.com)
+[Spring](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
 
 
 ##工具
