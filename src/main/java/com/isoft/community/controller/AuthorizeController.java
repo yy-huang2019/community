@@ -5,10 +5,12 @@ import com.isoft.community.dto.GitHubUser;
 import com.isoft.community.provider.GitHubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -23,24 +25,29 @@ public class AuthorizeController {
     @Value("${Github.Redirect.uri}")
     private String Redirect_uri;
 
-    @GetMapping("/callback")
+    @GetMapping("/callback")                       //虚拟路径，@RequestMapping(method = RequestMethod.GET)的缩写，该注解将HTTP Get 映射到 特定的处理方法上。
     public String callback(@RequestParam(name="code")String code,
-                           @RequestParam(name="state")String state){
+                           @RequestParam(name="state")String state,
+                           HttpServletRequest request){                               //session通过Requset方法拿到
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientID);
         accessTokenDTO.setClient_secret(client_secret);
         accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
-        accessTokenDTO.setRedirect_uri(Redirect_uri);                                            //传递accessTokenDTO的五个变量值
-        String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);                      //获取access_token中的值
-        GitHubUser user = null;                                                                  //将access_token传入返回得到的user信息
+        accessTokenDTO.setRedirect_uri(Redirect_uri);                                  //传递accessTokenDTO的五个变量值
+        String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);            //获取access_token中的值
+        GitHubUser user = null;                                                        //将access_token传入返回得到的user信息
         try {
             user = gitHubProvider.getUser(accessToken);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(user.getName());
-        return  "index";
+         if(user != null){
+             request.getSession().setAttribute("user" ,user);                        //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
+             return "redirect:/";                                                      //redirect重定向到index页面
+         }else {
+             return "redirect:/";                                                      //登录失败，重新登录
+         }
     }
 
 
