@@ -43,7 +43,7 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         accessTokenDTO.setRedirect_uri(Redirect_uri);                                  //传递accessTokenDTO的五个变量值
         String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);            //获取access_token中的值
-        GitHubUser gitHubUser = null;                                                        //将access_token传入返回得到的user信息
+        GitHubUser gitHubUser = null;                                                  //将access_token传入返回得到的user信息
         try {
             gitHubUser = gitHubProvider.getUser(accessToken);
         } catch (IOException e) {
