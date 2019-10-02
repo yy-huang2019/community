@@ -2,7 +2,11 @@ package com.isoft.community.controller;
 
 import com.isoft.community.dto.AccessTokenDTO;
 import com.isoft.community.dto.GitHubUser;
+import com.isoft.community.mapper.UserMapper;
+import com.isoft.community.model.User;
 import com.isoft.community.provider.GitHubProvider;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
@@ -25,6 +30,9 @@ public class AuthorizeController {
     @Value("${Github.Redirect.uri}")
     private String Redirect_uri;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/callback")                       //虚拟路径，@RequestMapping(method = RequestMethod.GET)的缩写，该注解将HTTP Get 映射到 特定的处理方法上。
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name="state")String state,
@@ -36,14 +44,27 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         accessTokenDTO.setRedirect_uri(Redirect_uri);                                  //传递accessTokenDTO的五个变量值
         String accessToken = gitHubProvider.getAccessToken(accessTokenDTO);            //获取access_token中的值
-        GitHubUser user = null;                                                        //将access_token传入返回得到的user信息
+        GitHubUser gitHubUser = null;                                                        //将access_token传入返回得到的user信息
         try {
-            user = gitHubProvider.getUser(accessToken);
+            gitHubUser = gitHubProvider.getUser(accessToken);
         } catch (IOException e) {
             e.printStackTrace();
         }
-         if(user != null){
-             request.getSession().setAttribute("user" ,user);                        //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
+         if(gitHubUser != null){
+             User user = new User();
+             user.setToken(UUID.randomUUID().toString());
+             String token = user.getToken();
+             user.setName(gitHubUser.getName());
+             String name = user.getName();
+             user.setAccount_id(String.valueOf(gitHubUser.getId()));                    //String.valueOf()进行强制转化
+             String account_id = user.getAccount_id();
+             user.setGmt_create(System.currentTimeMillis());
+             String gmt_create = String.valueOf(user.getGmt_create());
+             user.setGmt_modified(user.getGmt_create());
+             String gmt_modified = String.valueOf(user.getGmt_create());
+             userMapper.insert(name ,account_id ,token ,gmt_create ,gmt_modified);     //调用insert方法
+
+             request.getSession().setAttribute("gitHubUser" ,gitHubUser);            //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
              return "redirect:/";                                                      //redirect重定向到index页面
          }else {
              return "redirect:/";                                                      //登录失败，重新登录
