@@ -61,7 +61,9 @@ public class AuthorizeController {
              String gmt_create = String.valueOf(user.getGmt_create());
              user.setGmt_modified(user.getGmt_create());
              String gmt_modified = String.valueOf(user.getGmt_create());
-             userMapper.insert(name ,account_id ,token ,gmt_create ,gmt_modified);     //调用insert方法
+             user.setAvatar_url(gitHubUser.getAvatar_url());
+             String avatar_url = user.getAvatar_url();
+             userMapper.insert(name ,account_id ,token ,gmt_create ,gmt_modified ,avatar_url);     //调用insert方法
 
              response.addCookie(new Cookie("token" , token));                    //将生成的token写入cookie
              return "redirect:/index";                                                      //redirect重定向到index页面

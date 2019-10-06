@@ -4,8 +4,10 @@
     <script src="js/bootstrap.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/community.css">
     <title>码匠</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -46,5 +48,30 @@
         </div>
     </div>
 </nav>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12">
+            <h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp发现</h3>
+            <HR align=center width="100%" color=#fffff SIZE=2>
+            <div class="media" th:each="question : ${question}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-circle" th:src="${question.user.avatar_url}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <span th:text="${question.description}"></span><br>
+                    <span class="test-desc"><span th:text="${question.getComment_count()}"></span>个回复</span>
+                   ·<span class="test-desc"><span th:text="${question.getView_count()}"></span>次浏览</span>
+                   ·<span class="test-desc"><span th:text="${#dates.format(question.gmt_create,'dd MMMM yyyy')}"></span></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-3 col-xs-12">
+            <h3>热门话题</h3>
+        </div>
+    </div>
+</div>
 </body>
 </html>

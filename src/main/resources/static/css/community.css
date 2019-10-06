@@ -5,3 +5,13 @@
 .form-group{
     margin-top: 15px;
 }
+
+.media-object{
+    width: 38px;
+    height: 38px;
+}
+.test-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}

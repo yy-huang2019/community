@@ -1,50 +1,11 @@
 package com.isoft.community.dto;
 
+import lombok.Data;
+
+@Data
 public class GitHubUser {
     private String bio;
     private long id;
     private String name;
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "GitHubUser{" +
-                "bio='" + bio + '\'' +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getBio() {
-        return bio;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public GitHubUser() {
-    }
-
-    public GitHubUser(String bio, long id, String name) {
-        this.bio = bio;
-        this.id = id;
-        this.name = name;
-    }
+    private String avatar_url;
 }
