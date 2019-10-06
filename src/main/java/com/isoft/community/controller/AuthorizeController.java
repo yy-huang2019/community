@@ -49,7 +49,7 @@ public class AuthorizeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-         if(gitHubUser != null){
+         if(gitHubUser != null && gitHubUser.getName() != null){
              User user = new User();
              user.setToken(UUID.randomUUID().toString());
              String token = user.getToken();

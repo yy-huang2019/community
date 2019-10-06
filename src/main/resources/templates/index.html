@@ -31,6 +31,9 @@
                 <li th:if="${session.user == null}">
                     <a href="https://github.com/login/oauth/authorize?client_id=da503055424f1fa44435&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a></li>
                 <li class="dropdown" th:if="${session.user != null}">
+                    <a href="/publish">发布</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}">      <!--通过session.user.getName()获取登录的姓名-->
                         我<span class="caret"></span></a>
                     <ul class="dropdown-menu">

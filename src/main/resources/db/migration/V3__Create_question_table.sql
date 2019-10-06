@@ -13,4 +13,3 @@ create table question
 	constraint question_pk
 		primary key (id)
 );
-

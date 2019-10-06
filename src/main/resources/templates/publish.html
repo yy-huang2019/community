@@ -9,34 +9,32 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body style="background-color: #efefef">
-<nav class="navbar navbar-default" >
-    <div class="container-fluid" style="margin-left: 15px;height: 20px">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">码匠</span>
             </button>
-            <a class="navbar-brand" href="#" style="margin-top: 13px">问答社区</a>
+            <a class="navbar-brand" href="#" >问答社区</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索问题" style="margin-right: 4px">
-                </div>
-                <button type="submit" class="btn btn-default" style="margin-top: 10px">搜索</button>
+                    <input type="text" class="form-control" placeholder="搜索问题">
+
+                <button type="submit" class="btn btn-default">搜索</button>
             </form>
-            <ul class="nav navbar-nav navbar-right" style="float: right;margin-top: 9px">
+            <ul class="nav navbar-nav navbar-right">
                 <!--利用github授权登录-->
                 <li th:if="${session.user == null}">
-                    <a href="https://github.com/login/oauth/authorize?client_id=da503055424f1fa44435&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a>
+                    <a href="https://github.com/login/oauth/authorize?client_id=da503055424f1fa44435&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a></li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="/publish">发布</a>
                 </li>
                 <li class="dropdown" th:if="${session.user != null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" th:text="${session.user.getName()}">
-                        <!--通过session.user.getName()获取登录的姓名-->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}">      <!--通过session.user.getName()获取登录的姓名-->
                         我<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">消息中心</a></li>
@@ -53,21 +51,32 @@
         <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12">
             <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; 发起提问</h3>
             <HR align=center width="100%" color=#fffff SIZE=2>
-            <form action="">
+            <form action="/publish" method="post">
                 <div class="form-group">
                     <label for="title">问题标题 (简要概述): </label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题......">
+                    <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题......">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充 (请参照右侧提示): </label>
-                    <textarea class="form-control" placeholder="问题描述......" id="description" name="description" cols="30"
+                    <textarea class="form-control" placeholder="问题描述......" id="description" name="description" th:value="*{description}"
+                              cols="30"
                               rows="6"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签 : </label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，用“,”号分隔">
+                    <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="输入标签，用“,”号分隔">
                 </div>
-                <button type="submit" class="btn btn-success" style="float: right;margin-bottom: 15px">发布</button>
+                <div class="container-fluid main">
+                    <div class="row">
+                            <div class="alert alert-danger col-lg-9 col-md-12 col-sm-9 col-xs-12" style="float: left"
+                                 th:text="${error}" th:if="${error != null}"></div>
+                            <div class="col-lg-3 col-md-12 col-sm-3 col-xs-12" style="float: right">
+                                <button type="submit" class="btn btn-success" style="float: right">
+                                    发布
+                                </button>
+                            </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-3 col-xs-12">

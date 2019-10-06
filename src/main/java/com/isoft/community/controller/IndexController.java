@@ -30,6 +30,6 @@ public class IndexController {
                 break;
             }
         }
-        return "publish";
+        return "index";
     }
 }
