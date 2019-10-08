@@ -20,8 +20,6 @@ public class IndexController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private QustionMapper qustionMapper;
-    @Autowired
     private QuestionService questionService;
 
     @GetMapping("/index")
@@ -34,15 +32,15 @@ public class IndexController {
                     String token = cookie.getValue();
                     User user = userMapper.findByToken(token);
                     if (user != null) {
-                        request.getSession().setAttribute("user", user);        //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
+                        request.getSession().setAttribute("user", user);     //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
                     }
                     break;
                 }
             }
 
 
-        List<QuestionDTO> questionList = questionService.list();
-            model.addAttribute("question",questionList);
+        List<QuestionDTO> questionList = questionService.list();                //Controller层中实例化Service层的list方法获取到QuestionDTO的属性信息
+        model.addAttribute("question",questionList);                         //model通过addAttribute()方法将得到的键值对传递到前端
 
         return "index";
     }

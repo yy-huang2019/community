@@ -5,6 +5,7 @@
 [maven仓库](https://mvnrepository.com)
 [Spring](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
 [flyway maven](https://flywaydb.org/getstarted/firststeps/maven)
+[html中的thymeleaf工具](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#setting-attribute-values)
 
 
 ##工具

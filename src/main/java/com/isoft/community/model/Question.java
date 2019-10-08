@@ -3,7 +3,7 @@ package com.isoft.community.model;
 import lombok.Data;
 
 @Data
-public class Question {
+public class Question {                           //与数据库打交道的，一一和数据库对应
     private Integer id;
     private String title;
     private String description;

@@ -1,6 +1,5 @@
 package com.isoft.community.mapper;
 
-
 import com.isoft.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
