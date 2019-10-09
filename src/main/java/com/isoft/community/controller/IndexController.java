@@ -38,7 +38,6 @@ public class IndexController {
                 }
             }
 
-
         List<QuestionDTO> questionList = questionService.list();                //Controller层中实例化Service层的list方法获取到QuestionDTO的属性信息
         model.addAttribute("question",questionList);                         //model通过addAttribute()方法将得到的键值对传递到前端
 
