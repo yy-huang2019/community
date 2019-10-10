@@ -1,5 +1,6 @@
 package com.isoft.community.controller;
 
+import com.isoft.community.dto.PaginationDTO;
 import com.isoft.community.dto.QuestionDTO;
 import com.isoft.community.mapper.QustionMapper;
 import com.isoft.community.mapper.UserMapper;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,9 @@ public class IndexController {
 
     @GetMapping("/index")
     public String Index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name = "page" , defaultValue = "1")Integer page,
+                        @RequestParam(name = "size" , defaultValue = "2")Integer size){
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0)
             for (Cookie cookie : cookies) {
@@ -38,8 +42,8 @@ public class IndexController {
                 }
             }
 
-        List<QuestionDTO> questionList = questionService.list();                //Controller层中实例化Service层的list方法获取到QuestionDTO的属性信息
-        model.addAttribute("question",questionList);                         //model通过addAttribute()方法将得到的键值对传递到前端
+        PaginationDTO pagination = questionService.list(page , size);                //Controller层中实例化Service层的list方法获取到PaginationDTO的属性信息
+        model.addAttribute("pagination",pagination);                         //model通过addAttribute()方法将得到的键值对传递到前端
 
         return "index";
     }
