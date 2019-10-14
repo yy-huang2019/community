@@ -17,9 +17,19 @@ public interface QustionMapper {
 
     //分页功能展示提问
     @Select("select * from question limit ${offset} , ${size}")
-    List<Question> List(@Param("offset")Integer offset, @Param("size")Integer size);
+    List<Question> List(@Param("offset") Integer offset, @Param("size") Integer size);
 
     //查询问题总数
     @Select("select count(1) from question")
     Integer count();
+
+    //分页展示个人主页所提问题
+    @Select("select * from question where creator = #{user_id} limit ${offset} , ${size}")
+    List<Question> ListByUserId(@Param("user_id") Integer user_id, @Param("offset") Integer offset, @Param("size") Integer size);
+
+
+    //个人主页通过id找到所提出的问题
+    @Select("select count(1) from question where creator = #{user_id}")
+    Integer countByUserID(@Param("user_id") Integer user_id);
+
 }

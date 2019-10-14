@@ -1,7 +1,6 @@
 package com.isoft.community.dto;
 
 import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,24 +15,8 @@ public class PaginationDTO {        //包裹里面所要承载的元素
     private List<Integer> pages = new ArrayList<>();            //页码数
     private Integer totalPage;              //总页数
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
-
-        if (totalCount % size == 0) {             //size每一页数量,totalCount总问题数
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
-        //如果页码数>totalPage，则为最后一页
-        if (page >= totalPage) {
-            page = totalPage;
-        }
-
-        //如果页码数<1，则为第一页
-        if (page < 1) {
-            page = 1;
-        }
-
+    public void setPagination(Integer totalPage, Integer page) {
+        this.totalPage = totalPage;
         this.page = page;
 
         //展示页码数
