@@ -20,8 +20,8 @@ public class PublishController {
     @Autowired
     private QustionMapper qustionMapper;
 
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @GetMapping("/publish")                             //get方式请求
     public String publish() {
@@ -51,19 +51,22 @@ public class PublishController {
             return "publish";
         }
 
-        User user = null;
-        Cookie[] cookies = request.getCookies();                             //通过cookie方式获取user信息
-        if (cookies != null && cookies.length != 0)                          //判断cookie是否为空
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);       //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
-                    }
-                    break;
-                }
-            }
+//        User user = null;
+//        Cookie[] cookies = request.getCookies();                             //通过cookie方式获取user信息
+//        if (cookies != null && cookies.length != 0)                          //判断cookie是否为空
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("token")) {
+//                    String token = cookie.getValue();
+//                    user = userMapper.findByToken(token);
+//                    if (user != null) {
+//                        request.getSession().setAttribute("user", user);       //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
+//                    }
+//                    break;
+//                }
+//            }
+
+        User user = (User) request.getSession().getAttribute("user");
+
         if (user == null) {
             model.addAttribute("error", "用户未登录");
             return "publish";
