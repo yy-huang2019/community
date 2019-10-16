@@ -25,7 +25,7 @@ public class ProfileController {
     private QuestionService questionService;
 
     @GetMapping("/profile/{action}")
-    public String profile(@PathVariable(name = "action") String action,
+    public String profile(@PathVariable(name = "action") String action,                 //@PathVariable注解可以动态路由
                           HttpServletRequest request,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "2") Integer size,
@@ -46,13 +46,13 @@ public class ProfileController {
 //            }
 //        }
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");       //通过session的getAttribute方法将SessionInterceptor里面得到的session获取到
 
         if(user == null){
             return "redirect:/index";
         }
 
-        if("questions".equals(action)){
+        if("questions".equals(action)){                                       //action的值通过profile页面传递过来的参数确定
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
         }else{

@@ -14,6 +14,11 @@ public class WebConfig implements WebMvcConfigurer {
     private SessionInterceptor sessionInterceptor;
 
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");        //对所有的请求都进行拦截
     }
 }
+
+//    Spring Boot 默认提供Spring MVC 自动配置，不需要使用@EnableWebMvc注解
+//    如果需要配置MVC（拦截器interceptor、格式化、视图等） 请使用添加@Configuration并实现WebMvcConfigurer接口.不要添加@EnableWebMvc注解。
+//    @EnableWebMvc 只能添加到一个@Configuration配置类上，用于导入Spring Web MVC configuration
+//    最后，如果Spring Boot在classpath里看到有 spring webmvc 也会自动添加@EnableWebMvc。

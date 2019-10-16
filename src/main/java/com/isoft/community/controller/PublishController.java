@@ -65,7 +65,7 @@ public class PublishController {
 //                }
 //            }
 
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");         //通过session的getAttribute方法将SessionInterceptor里面得到的session获取到
 
         if (user == null) {
             model.addAttribute("error", "用户未登录");
