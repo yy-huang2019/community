@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -32,4 +33,7 @@ public interface QustionMapper {
     @Select("select count(1) from question where creator = #{user_id}")
     Integer countByUserID(@Param("user_id") Integer user_id);
 
+    //通过问题发起人的id找到该问题的信息
+    @Select("select * from question where id = #{id}")
+    Question getByID(@Param("id")Integer id);
 }

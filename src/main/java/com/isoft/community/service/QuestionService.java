@@ -64,6 +64,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    //个人问题页面的展示
     public PaginationDTO list(Integer user_id, Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -107,5 +108,16 @@ public class QuestionService {
 
 
         return paginationDTO;
+    }
+
+    //问题的回复传递到questionController
+    public QuestionDTO getByID(Integer id) {
+
+        Question question = qustionMapper.getByID(id);             //找到问题的发起人的id
+        User user = userMapper.findByID(question.getCreator());   //通过循环question对象找到里面的Creator属性,用userMapper的findByID()方法找到对应的id
+        QuestionDTO questionDTO = new QuestionDTO();               //实例化QuestionDTO
+        BeanUtils.copyProperties(question,questionDTO);            //将question的属性全部赋值给questionDTO
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }

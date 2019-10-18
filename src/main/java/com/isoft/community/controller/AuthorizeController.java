@@ -5,6 +5,7 @@ import com.isoft.community.dto.GitHubUser;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.User;
 import com.isoft.community.provider.GitHubProvider;
+import com.isoft.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.UUID;
 public class AuthorizeController {
     @Autowired                                        //自动注入
     private GitHubProvider gitHubProvider;
+    @Autowired
+    private UserService userService;
 
     @Value("${Github.client.id}")                    //通过@Value注解将properties中的参数注入到需要的变量中
     private String clientID;
@@ -57,13 +60,11 @@ public class AuthorizeController {
              String name = user.getName();
              user.setAccount_id(String.valueOf(gitHubUser.getId()));                    //String.valueOf()进行强制转化
              String account_id = user.getAccount_id();
-             user.setGmt_create(System.currentTimeMillis());
-             String gmt_create = String.valueOf(user.getGmt_create());
-             user.setGmt_modified(user.getGmt_create());
-             String gmt_modified = String.valueOf(user.getGmt_create());
              user.setAvatar_url(gitHubUser.getAvatar_url());
              String avatar_url = user.getAvatar_url();
-             userMapper.insert(name ,account_id ,token ,gmt_create ,gmt_modified ,avatar_url);     //调用insert方法
+
+             userService.createOrUpdate(user);
+             //userMapper.insert(name ,account_id ,token ,gmt_create ,gmt_modified ,avatar_url);     //调用insert方法
 
              response.addCookie(new Cookie("token" , token));                    //将生成的token写入cookie
              return "redirect:/index";                                                      //redirect重定向到index页面
@@ -72,5 +73,14 @@ public class AuthorizeController {
          }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,                   //session通过request设置
+                         HttpServletResponse response) {               //cookie通过response设置
+        request.getSession().removeAttribute("user");               //过去登录的user的session并进行移除
+        Cookie cookie = new Cookie("token", null);        //通过token设置新的cookie为null值
+        cookie.setMaxAge(0);                                          //将cookie的该属性设置为0
+        response.addCookie(cookie);                                   //添加该cookie即可删除原有的cookie
+        return "redirect:/index";
+    }
 
 }
