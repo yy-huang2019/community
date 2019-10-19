@@ -1,16 +1,15 @@
 package com.isoft.community.controller;
 
+import com.isoft.community.dto.QuestionDTO;
 import com.isoft.community.mapper.QustionMapper;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Question;
 import com.isoft.community.model.User;
+import com.isoft.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +17,25 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
     @Autowired
-    private QustionMapper qustionMapper;
+    private QuestionService questionService;
 
 //    @Autowired
 //    private UserMapper userMapper;
+
+
+    //跟新问题
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable("id") Integer id,
+                       Model model) {
+        QuestionDTO question = questionService.getByID(id);
+        model.addAttribute("title", question.getTitle());                                 //model将数据保存起来，用于在html页面中显示出来
+        model.addAttribute("description", question.getDescription());       //架构该问题的描述拿到
+        model.addAttribute("tag", question.getTag());                       //将该问题的标签拿到
+        model.addAttribute("id", question.getId());                         //查找id，找到对应的开始问题的id
+        return "publish";
+    }
+
+
 
     @GetMapping("/publish")                             //get方式请求
     public String publish() {
@@ -33,6 +47,7 @@ public class PublishController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
+            @RequestParam("id") Integer id,
             Model model,
             HttpServletRequest request) {
         model.addAttribute("title", title);                                 //model将数据保存起来，用于在html页面中显示出来
@@ -76,9 +91,10 @@ public class PublishController {
         question.setTag(tag);
         question.setTitle(title);
         question.setCreator(user.getId());
-        question.setGmt_create(System.currentTimeMillis());
-        question.setGmt_modified(question.getGmt_create());
-        qustionMapper.create(question);                                        //通过set queston中的属性，将其传递给dao层写入数据库
+        question.setId(id);                                 //通过上面的@RequestParam的id属性获得其id值，如果没有问题的话则不会有id值，id值是自动产生的
+
+        questionService.createOrUpdate(question);           //跟新或写入
+        //qustionMapper.create(question);                                        //通过set queston中的属性，将其传递给dao层写入数据库
         return "redirect:/index";
     }
 

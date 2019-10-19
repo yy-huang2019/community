@@ -1,10 +1,7 @@
 package com.isoft.community.mapper;
 
 import com.isoft.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,4 +33,9 @@ public interface QustionMapper {
     //通过问题发起人的id找到该问题的信息
     @Select("select * from question where id = #{id}")
     Question getByID(@Param("id")Integer id);
+
+    //跟新所发布的问题
+    @Update("update question set title = #{title} , description = #{description} , tag = #{tag} , gmt_modified = #{gmt_modified} where id = #{id}")
+    void update(Question question);
+
 }

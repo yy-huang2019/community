@@ -120,4 +120,17 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void createOrUpdate(Question question) {
+        if(question.getId() == null){                      //通过是否获得id值来判断是否是新的问题或是原来需要根新的问题
+            //创建
+            question.setGmt_create(System.currentTimeMillis());
+            question.setGmt_modified(question.getGmt_create());
+            qustionMapper.create(question);
+        }else {
+            //跟新
+            question.setGmt_modified(System.currentTimeMillis());
+            qustionMapper.update(question);
+        }
+    }
 }
