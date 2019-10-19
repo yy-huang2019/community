@@ -42,7 +42,7 @@ public class PublishController {
         return "publish";
     }
 
-    @PostMapping("/publish")                            //post方式请求
+    @PostMapping("/publish")                            //post方式请求用来发布问题信息
     public String doPublish(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
