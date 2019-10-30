@@ -36,6 +36,6 @@ public interface QustionMapper {
 
     //跟新所发布的问题
     @Update("update question set title = #{title} , description = #{description} , tag = #{tag} , gmt_modified = #{gmt_modified} where id = #{id}")
-    void update(Question question);
+    int update(Question question);
 
 }

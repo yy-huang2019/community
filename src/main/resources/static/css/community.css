@@ -29,3 +29,8 @@
     color: #9999;
     font-size: 13px;
 }
+
+.jumbotron{
+    margin: 50px;
+    background-color: white;
+}

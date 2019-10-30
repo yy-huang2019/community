@@ -2,6 +2,8 @@ package com.isoft.community.service;
 
 import com.isoft.community.dto.PaginationDTO;
 import com.isoft.community.dto.QuestionDTO;
+import com.isoft.community.exception.CustomizeErrorCode;
+import com.isoft.community.exception.CustomizeException;
 import com.isoft.community.mapper.QustionMapper;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Question;
@@ -114,6 +116,12 @@ public class QuestionService {
     public QuestionDTO getByID(Integer id) {
 
         Question question = qustionMapper.getByID(id);             //找到问题的发起人的id
+
+        if (question == null){        //(写该处的原因)最开始通过CustomizeExceptionHandle测试问题页面找到该处问题id为null,则通过自己定义一个exception回传异常信息
+            //如果找到的数据不存在，则抛出自定义的异常，CustomizeException的构造方法传ICustomizeErrorCode的参数
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+
         User user = userMapper.findByID(question.getCreator());   //通过循环question对象找到里面的Creator属性,用userMapper的findByID()方法找到对应的id
         QuestionDTO questionDTO = new QuestionDTO();               //实例化QuestionDTO
         BeanUtils.copyProperties(question,questionDTO);            //将question的属性全部赋值给questionDTO
@@ -128,9 +136,12 @@ public class QuestionService {
             question.setGmt_modified(question.getGmt_create());
             qustionMapper.create(question);
         }else {
-            //跟新
+            //更新
             question.setGmt_modified(System.currentTimeMillis());
-            qustionMapper.update(question);
+            int update = qustionMapper.update(question);
+            if(update != 1){                             //更新不成功
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);     //如果很多地方都要用到throw该异常，则都需要自定义该参数，这是通过重新封装CustomizeErrorCode
+            }
         }
     }
 }

@@ -1,0 +1,23 @@
+
+<!--如果有error.html页面，则出错信息直接回传给该html页面-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/js/jquery-3.1.1.min.js"></script>          <!--引用bootstrap之前就应该先引用jquery-->
+    <script src="/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <title>码匠</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="jumbotron">
+    <h1>出错啦！</h1>
+    <p th:text="${message}">服务太热啦，稍后再试试吧！</p>
+    <p><a class="btn btn-primary btn-lg" href="/index" role="button">返回主页</a></p>
+</div>
+</body>
+</html>
