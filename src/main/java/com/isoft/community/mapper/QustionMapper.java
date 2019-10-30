@@ -38,4 +38,8 @@ public interface QustionMapper {
     @Update("update question set title = #{title} , description = #{description} , tag = #{tag} , gmt_modified = #{gmt_modified} where id = #{id}")
     int update(Question question);
 
+    //跟新所发布的问题的阅读数
+    @Update("update question set view_count = view_count + 1 where id = #{id}")
+    void incView(Integer id);
+
 }

@@ -144,4 +144,13 @@ public class QuestionService {
             }
         }
     }
+
+    public void incView(Integer id) {
+        Question question = qustionMapper.getByID(id);
+        if (question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        qustionMapper.incView(id);
+    }
 }
+
