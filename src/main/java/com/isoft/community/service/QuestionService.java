@@ -145,6 +145,7 @@ public class QuestionService {
         }
     }
 
+    //增加阅读数
     public void incView(Integer id) {
         Question question = qustionMapper.getByID(id);
         if (question == null){
