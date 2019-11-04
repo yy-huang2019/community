@@ -42,4 +42,7 @@ public interface QustionMapper {
     @Update("update question set view_count = view_count + 1 where id = #{id}")
     void incView(Integer id);
 
+    //跟新所发布问题的评论数
+    @Update("update question set comment_count = comment_count + 1 where id = #{id}")
+    void addComment(Integer id);
 }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class Comment {
-    private long id;
-    private long parent_id;
+    private Integer id;
+    private Integer parent_id;
     private Integer type;
     private Integer commentator;
     private long gmt_create;
