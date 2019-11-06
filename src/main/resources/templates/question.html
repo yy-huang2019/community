@@ -16,9 +16,10 @@
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid profile">
     <div class="row">
+        <!--        正文-->
         <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-9 col-xs-12">
-                <h4><span th:text="${question.title}"></span>&nbsp</h4>
+                <h3><span th:text="${question.title}"></span>&nbsp</h3>
                 <span class="test-desc">
                 作者：<span th:text="${question.user.getName()}"></span>
                 |  阅读数：<span th:text="${question.getView_count()}"></span>
@@ -34,9 +35,40 @@
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     <span>编辑</span>
                 </a>
-                <HR align=center width="100%" color=#fffff SIZE=2 class="col-lg-12 col-md-12 col-sm-9 col-xs-12">
+            </div>
+            <!--回复-->
+            <h4 >
+                <span th:text="${question.getComment_count()}" style="margin-left: 10px"></span>个回复
+                <HR align=center width="100%" color=#fffff SIZE=2 class="col-lg-12 col-md-12 col-sm-9 col-xs-12" style="margin: 5px">
+            </h4>
+            <div class="col-lg-12 col-md-12 col-sm-9 col-xs-12 comments" th:each="comment:${comments}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${comment.user.avatar_url}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <span>  </span>
+                        <h5 class="media-heading" style="margin-top: 12px">
+                            <span th:text="${comment.user.getName()}" style=""></span>
+                        </h5>
+                        <!--得到评论内容-->
+                        <div th:text="${comment.getContent()}">
+                        </div>
+                        <div style="margin-top: 10px" class="comment">
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="pull-right" th:text="${#dates.format(question.gmt_create,'yyyy-MM-dd HH:mm')}"></span>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
+            <HR align=center width="100%" color=#fffff SIZE=2 class="col-lg-12 col-md-12 col-sm-9 col-xs-12" style="margin-top: 5px">
+            <!--            回复输入框-->
             <div class="col-lg-12 col-md-12 col-sm-9 col-xs-12" id="comment_section">
                 <div class="media">
                     <div class="media-left">
@@ -53,7 +85,8 @@
                 </div>
                 <input type="hidden" th:value="${question.id}" id="question_id">
                 <textarea class="form-control" rows="6" style="margin: 8px 0px" id="comment_id"></textarea>
-                <button type="button" class="btn btn-success" style="float: right;margin: 8px 0" onclick="post()">回复</button>
+                <button type="button" class="btn btn-success" style="float: right;margin: 8px 0" onclick="post()">回复
+                </button>
             </div>
 
         </div>

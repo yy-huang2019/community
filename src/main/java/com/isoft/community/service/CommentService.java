@@ -1,15 +1,26 @@
 package com.isoft.community.service;
 
+import com.isoft.community.dto.CommentDTO;
 import com.isoft.community.enums.CommentTypeEnum;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.exception.CustomizeException;
 import com.isoft.community.mapper.CommentMapper;
 import com.isoft.community.mapper.QustionMapper;
+import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Comment;
 import com.isoft.community.model.Question;
+import com.isoft.community.model.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -17,6 +28,8 @@ public class CommentService {
     private CommentMapper commentMapper;
     @Autowired
     private QustionMapper qustionMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Transactional               //自动将该方法体加上事务
     public void insert(Comment comment) {
@@ -45,5 +58,47 @@ public class CommentService {
             //增加评论数
             qustionMapper.addComment(question.getId());
         }
+    }
+
+
+    public List<CommentDTO> listByQuestionId(Integer id) {
+        Integer type = CommentTypeEnum.QUESTION.getType();          //定义的是第一级评论
+        //获取所有的评论
+        List<Comment> comments = commentMapper.selectByParentId(id , type);           //通过评论的parent_id和type=1找到该问题
+
+        if(comments.size() == 0){
+            return new ArrayList<>();
+        }
+        //获取lambda表达式去重的评论人的id               (用map遍历comments，返回一个得到commentator的结果集，将其计算出来放回到一个set中)
+        Set<Integer> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        List<Integer> userIds = new ArrayList<>();
+        userIds.addAll(commentators);
+
+        //通过评论人的id获取评论人并转化为map
+        List<User> users = new ArrayList<>();
+        for(Integer userId : userIds){
+            User user = userMapper.findByID(userId);
+            users.add(user);
+        }                                           //(收集user_id和user使用map方法)
+        Map<Integer,User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(),user -> user));
+
+        //转化comment为commentDTO
+//        List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
+//            CommentDTO commentDTO = new CommentDTO();     //出现的问题都是修后一个是因为直接实例化了一个commentDTO
+//            BeanUtils.copyProperties(comment,commentDTO);
+//            commentDTO.setUser(userMap.get(comment.getCommentator()));
+//            return commentDTO;
+//        }).collect(Collectors.toList());
+
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for(Comment comment : comments){
+            //此处是将comment循环传递到commentDTO，需要多个对象将其得到其当前的comment对象
+            CommentDTO commentDTO = new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            //使用上一步的userMap中得到当前评论人的user对象，而不用直接使用双重for循环将comment和user拿到
+            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            commentDTOS.add(commentDTO);
+        }
+        return commentDTOS;
     }
 }

@@ -13,7 +13,7 @@
 <script type="application/javascript">
     window.onload = function () {
         debugger;
-        var closable = window.localStorage.getItem("closable");         //得到community.js中存储的localStorage
+        var closable = window.localStorage.getItem("closable");         //得到community.js中原来页面存储的localStorage
         if(closable == "true"){
             window.close();              //将之前的页面关掉
             window.localStorage.removeItem("closable");   //移除community.js中存储的localStorage

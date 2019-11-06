@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface CommentMapper {
 
@@ -17,4 +19,7 @@ public interface CommentMapper {
     @Select("select * from comment where id = ${parent_id}")
     Comment found(@Param("parent_id") Integer parent_id);
 
+    //通过评论找到该问题的parentId
+    @Select("select * from comment where parent_id = ${id} and type = ${type}")
+    List<Comment> selectByParentId(@Param("id") Integer id , @Param("type")Integer type);
 }

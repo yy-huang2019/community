@@ -34,3 +34,22 @@
     margin: 50px;
     background-color: white;
 }
+
+.comment{
+    color: #999;
+}
+
+.comment .icon{
+    cursor:pointer;
+}
+
+/*鼠标悬浮是颜色改变*/
+.comment .icon:hover{
+    color: #499ef3;
+}
+
+.comments{
+  margin-bottom: 15px;
+    border-bottom: 1px solid #999;
+    padding-bottom: 5px;
+}

@@ -21,7 +21,7 @@ function post() {
                     if (isAccept) {
                         //window的直接打开一个url
                         window.open("https://github.com/login/oauth/authorize?client_id=da503055424f1fa44435&redirect_uri=http://localhost:8888/callback&scope=user&state=1");
-                        window.localStorage.setItem("closable",true);           //在web页面通过localStorage存值
+                        window.localStorage.setItem("closable" , true);           //在web页面通过localStorage存值
                     }
                 } else {
                     alert(response.message);
