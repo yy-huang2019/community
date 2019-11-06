@@ -1,6 +1,11 @@
 function post() {
     var question_id = $("#question_id").val();
     var content = $("#comment_id").val();
+    if(!content){                                    //客户端校验
+        alert("不能回复空内容喔~~~");
+        return;
+    }
+
     $.ajax({
         type: "post",
         url: "/comment",
@@ -12,7 +17,9 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) {
+                window.location.reload();    //加载页面
                 $("#comment_section").hide();
+
             } else {
                 //2003表示用户未登录
                 if (response.code == 2003) {

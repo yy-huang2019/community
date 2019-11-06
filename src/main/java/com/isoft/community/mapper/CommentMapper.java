@@ -20,6 +20,6 @@ public interface CommentMapper {
     Comment found(@Param("parent_id") Integer parent_id);
 
     //通过评论找到该问题的parentId
-    @Select("select * from comment where parent_id = ${id} and type = ${type}")
+    @Select("select * from comment where parent_id = ${id} and type = ${type} order by gmt_create desc")
     List<Comment> selectByParentId(@Param("id") Integer id , @Param("type")Integer type);
 }
