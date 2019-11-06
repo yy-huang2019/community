@@ -13,16 +13,16 @@ public interface QustionMapper {
     @Insert("insert into question (title ,description ,gmt_create ,gmt_modified  ,creator ,tag) values (#{title} ,#{description} ,#{gmt_create} ,#{gmt_modified} ,#{creator} ,#{tag})")
     void create(Question question);
 
-    //分页功能展示提问
-    @Select("select * from question limit ${offset} , ${size}")
+    //分页功能展示提问(按照时间倒序排列)
+    @Select("select * from question order by gmt_create desc,id asc limit ${offset} , ${size}")
     List<Question> List(@Param("offset") Integer offset, @Param("size") Integer size);
 
     //查询问题总数
     @Select("select count(1) from question")
     Integer count();
 
-    //分页展示个人主页所提问题
-    @Select("select * from question where creator = #{user_id} limit ${offset} , ${size}")
+    //分页展示个人主页所提问题(按照时间倒序排列)
+    @Select("select * from question where creator = #{user_id} order by gmt_create desc,id asc limit ${offset} , ${size}")
     List<Question> ListByUserId(@Param("user_id") Integer user_id, @Param("offset") Integer offset, @Param("size") Integer size);
 
 
