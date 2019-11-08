@@ -1,7 +1,9 @@
 package com.isoft.community.controller;
 
 import com.isoft.community.dto.CommentCreateDTO;
+import com.isoft.community.dto.CommentDTO;
 import com.isoft.community.dto.ResultDTO;
+import com.isoft.community.enums.CommentTypeEnum;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.model.Comment;
 import com.isoft.community.model.User;
@@ -9,11 +11,10 @@ import com.isoft.community.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -47,5 +48,14 @@ public class CommentController {
         comment.setCommentator(user.getId());
         commentService.insert(comment);
         return ResultDTO.okOf();
+    }
+
+
+    //增加二级评论
+    @ResponseBody                    //返回的也是json的格式
+    @GetMapping("/comment/{id}")
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable("id") Integer id){
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okOf(commentDTOS);
     }
 }

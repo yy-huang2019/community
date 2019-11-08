@@ -5,7 +5,7 @@ import com.isoft.community.enums.CommentTypeEnum;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.exception.CustomizeException;
 import com.isoft.community.mapper.CommentMapper;
-import com.isoft.community.mapper.QustionMapper;
+import com.isoft.community.mapper.QuestionMapper;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Comment;
 import com.isoft.community.model.Question;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +26,7 @@ public class CommentService {
     @Autowired
     private CommentMapper commentMapper;
     @Autowired
-    private QustionMapper qustionMapper;
+    private QuestionMapper qustionMapper;
     @Autowired
     private UserMapper userMapper;
 
@@ -47,6 +46,7 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);           //插入评论入数据库
+            commentMapper.addComment(comment.getParent_id());   //增加其创建新的评论的父评论的评论数+1
         }else {                                                                  //否则回复的是该问题
             //回复问题
             Question question = qustionMapper.getByID(comment.getParent_id());
@@ -61,10 +61,9 @@ public class CommentService {
     }
 
 
-    public List<CommentDTO> listByQuestionId(Integer id) {
-        Integer type = CommentTypeEnum.QUESTION.getType();          //定义的是第一级评论
+    public List<CommentDTO> listByTargetId(Integer id , CommentTypeEnum type) {
         //获取所有的评论
-        List<Comment> comments = commentMapper.selectByParentId(id , type);           //通过评论的parent_id和type=1找到该问题
+        List<Comment> comments = commentMapper.selectByParentId(id , type.getType());           //通过评论的parent_id和type的类型找到该问题
 
         if(comments.size() == 0){
             return new ArrayList<>();

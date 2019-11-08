@@ -4,7 +4,7 @@ import com.isoft.community.dto.PaginationDTO;
 import com.isoft.community.dto.QuestionDTO;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.exception.CustomizeException;
-import com.isoft.community.mapper.QustionMapper;
+import com.isoft.community.mapper.QuestionMapper;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Question;
 import com.isoft.community.model.User;
@@ -20,7 +20,7 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private QustionMapper qustionMapper;
+    private QuestionMapper qustionMapper;
 
     //组装Qusetion和User的中间层，当一个请求需要多个Mapper(QusetionMapper和UserMapperd组成QusetionDTO(Qusetion中多了User对象获取avatar_url))进行组装时，Service层提供相应的组装功能
     public PaginationDTO list(Integer page, Integer size){

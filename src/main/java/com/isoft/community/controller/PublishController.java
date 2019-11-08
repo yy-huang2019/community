@@ -1,8 +1,6 @@
 package com.isoft.community.controller;
 
 import com.isoft.community.dto.QuestionDTO;
-import com.isoft.community.mapper.QustionMapper;
-import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Question;
 import com.isoft.community.model.User;
 import com.isoft.community.service.QuestionService;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller

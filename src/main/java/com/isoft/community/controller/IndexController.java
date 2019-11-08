@@ -1,20 +1,12 @@
 package com.isoft.community.controller;
 
 import com.isoft.community.dto.PaginationDTO;
-import com.isoft.community.dto.QuestionDTO;
-import com.isoft.community.mapper.QustionMapper;
-import com.isoft.community.mapper.UserMapper;
-import com.isoft.community.model.User;
 import com.isoft.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController {

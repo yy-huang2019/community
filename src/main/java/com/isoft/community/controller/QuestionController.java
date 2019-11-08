@@ -1,8 +1,8 @@
 package com.isoft.community.controller;
 
-import com.isoft.community.dto.CommentCreateDTO;
 import com.isoft.community.dto.CommentDTO;
 import com.isoft.community.dto.QuestionDTO;
+import com.isoft.community.enums.CommentTypeEnum;
 import com.isoft.community.service.CommentService;
 import com.isoft.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,9 @@ public class QuestionController {
                            Model model) {
         QuestionDTO questionDTO = questionService.getByID(id);          //通过service将数据拿到
 
-        //
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        CommentTypeEnum type = CommentTypeEnum.QUESTION;
+        //通过id和类型查找到该问题下面的评论
+        List<CommentDTO> comments = commentService.listByTargetId(id , type);
 
         //累加阅读数
         questionService.incView(id);

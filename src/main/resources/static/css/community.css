@@ -44,6 +44,11 @@
     cursor:pointer;
 }
 
+.comment .active{
+    cursor:pointer;
+    color: #499ef3;
+}
+
 /*鼠标悬浮是颜色改变*/
 .comment .icon:hover{
     color: #499ef3;
@@ -57,4 +62,17 @@
 
 #comment_section{
     margin-top: 15px;
+}
+
+
+.sub-comment{
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.sub-comment .btn{
+    float: right;
+    margin-top: 8px;
 }
