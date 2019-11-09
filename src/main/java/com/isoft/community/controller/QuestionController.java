@@ -31,11 +31,15 @@ public class QuestionController {
         //通过id和类型查找到该问题下面的评论
         List<CommentDTO> comments = commentService.listByTargetId(id , type);
 
+        //通过该问问题的id和tag正则表达式找到相应问题将其展示在相关问题列表内
+        List<QuestionDTO> relatedQuestions = questionService.selectRelated(questionDTO);
+
         //累加阅读数
         questionService.incView(id);
 
         model.addAttribute("question", questionDTO);                 //通过model将questionDTO的信息全部传递到前端页面
         model.addAttribute("comments", comments);                    //通过model将comments的信息全部传递到前端页面
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 }

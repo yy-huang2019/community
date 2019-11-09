@@ -8,11 +8,15 @@ import com.isoft.community.mapper.QuestionMapper;
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.Question;
 import com.isoft.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -155,6 +159,33 @@ public class QuestionService {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         qustionMapper.incView(id);
+    }
+
+    //通过该问问题的id和tag正则表达式找到相应问题将其展示在相关问题列表内
+    public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
+        if (StringUtils.isBlank(questionDTO.getTag())) {
+            return new ArrayList<>();
+        }
+
+        //StringUtils工具包是apache.commons.lang添加该配置文件获得的
+        String[] tags = StringUtils.split(questionDTO.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));//通过java8语法将其数组后面添加上|
+        Question question = new Question();
+        question.setTag(regexpTag);
+        String tag = question.getTag();
+        question.setId(questionDTO.getId());
+        Integer id = question.getId();
+
+        //传递其id实为了不再将该问题展示出来
+        List<Question> questions = qustionMapper.selectRelated(tag, id);
+
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO1 = new QuestionDTO();
+            BeanUtils.copyProperties(q,questionDTO1);
+            return questionDTO1;
+        }).collect(Collectors.toList());
+
+        return questionDTOS;
     }
 }
 

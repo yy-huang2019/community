@@ -45,4 +45,9 @@ public interface QuestionMapper {
     //跟新所发布问题的评论数
     @Update("update question set comment_count = comment_count + 1 where id = #{id}")
     void addComment(Integer id);
+
+    //通过该问问题的tag通过正则表达式regexp找到相应问题将其展示在相关问题列表内
+    @Select("select * from question where id != ${id} and tag regexp #{tag}")
+    List<Question> selectRelated(@Param("tag") String tag, @Param("id") Integer id);
+
 }

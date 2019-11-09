@@ -1,6 +1,7 @@
 .main{
     margin: 30px;
     background-color: white;
+    background-image: url('/img/background.jpg')
 }
 .form-group{
     margin-top: 15px;
@@ -28,7 +29,6 @@
 .community-menu{
     color: #9999;
     font-size: 13px;
-    margin-left:15px;
 }
 
 .jumbotron{
@@ -75,4 +75,16 @@
 .sub-comment .btn{
     float: right;
     margin-top: 8px;
+}
+
+.question-tag{
+    margin-right: 6px;
+}
+
+#question-related{
+    line-height: 20px;
+    font-size: 14px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
 }
