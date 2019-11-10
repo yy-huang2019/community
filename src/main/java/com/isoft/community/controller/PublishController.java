@@ -1,9 +1,12 @@
 package com.isoft.community.controller;
 
+import com.isoft.community.cache.TagCache;
 import com.isoft.community.dto.QuestionDTO;
+import com.isoft.community.dto.TagDTO;
 import com.isoft.community.model.Question;
 import com.isoft.community.model.User;
 import com.isoft.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,22 +23,24 @@ public class PublishController {
 //    private UserMapper userMapper;
 
 
-    //跟新问题
+    //展示将要跟新的问题(编辑)
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable("id") Integer id,
                        Model model) {
         QuestionDTO question = questionService.getByID(id);
-        model.addAttribute("title", question.getTitle());                                 //model将数据保存起来，用于在html页面中显示出来
+        model.addAttribute("title", question.getTitle());                   //model将数据保存起来，用于在html页面中显示出来
         model.addAttribute("description", question.getDescription());       //架构该问题的描述拿到
         model.addAttribute("tag", question.getTag());                       //将该问题的标签拿到
         model.addAttribute("id", question.getId());                         //查找id，找到对应的开始问题的id
+        model.addAttribute("tags", TagCache.get());                         //加入所需要的标签
         return "publish";
     }
 
 
 
     @GetMapping("/publish")                             //get方式请求
-    public String publish() {
+    public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());                         //加入所需要的标签
         return "publish";
     }
 
@@ -50,6 +55,7 @@ public class PublishController {
         model.addAttribute("title", title);                                 //model将数据保存起来，用于在html页面中显示出来
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());                         //加入所需要的标签
         if (title == null || title == "") {                                    //判断标题是否为空
             model.addAttribute("error", "标题不能为空");
             return "publish";
@@ -60,6 +66,12 @@ public class PublishController {
         }
         if (tag == null || tag == "") {                                        //判断所填标签的值是否为空
             model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
+
+        String invalid = TagCache.filterIvalid(tag);
+        if(StringUtils.isNotBlank(invalid)){
+            model.addAttribute("error","输入非法标签:"+invalid);
             return "publish";
         }
 

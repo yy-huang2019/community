@@ -88,3 +88,16 @@
     list-style: none;
     padding-left: 0;
 }
+
+#selectTags .label-info{
+    margin-right: 10px;
+    cursor:pointer;
+}
+
+#selectTags
+{
+    margin-top: 8px;
+    display: none;
+    padding-top: 10px;
+}
+

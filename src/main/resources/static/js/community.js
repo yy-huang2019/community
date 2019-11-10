@@ -125,3 +125,23 @@ function collapseComments(e) {
         }
     }
 }
+
+//添加标签
+function selectTag(e) {
+    var value = e.getAttribute("data-tag");    //得到该标签data的值
+    var previous = $("#tag").val();
+    //如果tag框内的值没有需要添加的值时将该添加的标签的值添加进去
+    if(previous.indexOf(value) == -1){
+        if(previous){
+            $("#tag").val(previous+','+value);
+        }else {
+            $("#tag").val(value);
+        }
+    }
+
+}
+
+//通过触发标签栏将标签选择页显示出来
+function showSelectTag() {
+    $("#selectTags").show();
+}
