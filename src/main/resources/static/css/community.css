@@ -92,6 +92,9 @@
 #selectTags .label-info{
     margin-right: 10px;
     cursor:pointer;
+    white-space: normal;   //自动换行
+    display: inline-block;
+    margin: 10px 5px;
 }
 
 #selectTags
