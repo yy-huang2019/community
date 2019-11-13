@@ -2,6 +2,7 @@ package com.isoft.community.interceptor;
 
 import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.User;
+import com.isoft.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -26,6 +29,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                     User user = userMapper.findByToken(token);                  //通过查询token的方式找到当前的用户
                     if (user != null) {
                         request.getSession().setAttribute("user", user);     //request方法拿到session，设置user的信息，登陆成功，写Session和cookie
+
+                        Integer unreadCount = notificationService.unreadCount(user.getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

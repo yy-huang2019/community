@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PaginationDTO {        //包裹里面所要承载的元素
-    private List<QuestionDTO> questions;    //将所要展示的QuestionDTO对象加入，而后直接在QuestionService中将其setQuestions()进去
+public class PaginationDTO<T> {        //包裹里面所要承载的元素
+    private List<T> data;    //将所要展示的QuestionDTO对象加入，而后直接在QuestionService中将其setQuestions()进去
     private boolean showPrevious;           //是否展示前一页按钮
     private boolean showFirstPage;          //是否展示第一页按钮
     private boolean showNext;               //是否展示后一页按钮

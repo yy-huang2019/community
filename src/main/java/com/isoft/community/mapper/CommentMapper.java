@@ -2,7 +2,6 @@ package com.isoft.community.mapper;
 
 import com.isoft.community.model.Comment;
 import org.apache.ibatis.annotations.*;
-
 import java.util.List;
 
 @Mapper

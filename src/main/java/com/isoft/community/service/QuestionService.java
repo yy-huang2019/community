@@ -65,7 +65,7 @@ public class QuestionService {
             questionDTO.setUser(user);                                //再将通过userMapper的findByID方法获取的user对象放置到questionDTO里面的user对象中
             QuestionDTOList.add(questionDTO);                         //将得到的questionDTO对象添加到QuestionDTOList集合中
         }
-        paginationDTO.setQuestions(QuestionDTOList);    //paginationDTO里面有questionDTO集合，因此将QuestionDTOList导入其中
+        paginationDTO.setData(QuestionDTOList);    //paginationDTO里面有questionDTO集合，因此将QuestionDTOList导入其中
 
         return paginationDTO;
     }
@@ -110,7 +110,7 @@ public class QuestionService {
             questionDTO.setUser(user);                                //再将通过userMapper的findByID方法获取的user对象放置到questionDTO里面的user对象中
             QuestionDTOList.add(questionDTO);                         //将得到的questionDTO对象添加到QuestionDTOList集合中
         }
-        paginationDTO.setQuestions(QuestionDTOList);    //paginationDTO里面有questionDTO集合，因此将QuestionDTOList导入其中
+        paginationDTO.setData(QuestionDTOList);    //paginationDTO里面有questionDTO集合，因此将QuestionDTOList导入其中
 
 
         return paginationDTO;

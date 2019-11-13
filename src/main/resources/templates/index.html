@@ -26,7 +26,7 @@
         <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12">
             <h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp发现</h3>
             <HR align=center width="100%" color=#fffff SIZE=2>
-            <div class="media" th:each="question : ${pagination.questions}">
+            <div class="media" th:each="question : ${pagination.data}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-circle" th:src="${question.user.avatar_url}">

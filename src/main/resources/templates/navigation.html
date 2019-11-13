@@ -29,6 +29,7 @@
                     <li class="dropdown" th:if="${session.user != null}">
                         <a href="/publish">提问</a>
                     </li>
+                    <li><a href="/profile/replies">通知&nbsp;<span class="badge" th:text="${session.unreadCount}"></span></a></li>
                     <li class="dropdown" th:if="${session.user != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">      <!--通过session.user.getName()获取登录的姓名-->
                             <span th:text="${session.user.getName()}"></span>

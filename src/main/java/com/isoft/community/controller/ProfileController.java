@@ -2,7 +2,9 @@ package com.isoft.community.controller;
 
 import com.isoft.community.dto.PaginationDTO;
 import com.isoft.community.mapper.UserMapper;
+import com.isoft.community.model.Notification;
 import com.isoft.community.model.User;
+import com.isoft.community.service.NotificationService;
 import com.isoft.community.service.QuestionService;
 import org.apache.catalina.filters.ExpiresFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,                 //@PathVariable注解可以动态路由
@@ -55,13 +59,17 @@ public class ProfileController {
         if("questions".equals(action)){                                       //action的值通过profile页面传递过来的参数确定
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
-        }else{
+
+            PaginationDTO paginationDTO =  questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination",paginationDTO);
+        }else if("replies".equals(action)){
+
+            PaginationDTO paginationDTO = notificationService.list(user.getId(),page,size);
+            model.addAttribute("pagination",paginationDTO);
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
         }
 
-        PaginationDTO paginationDTO =  questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination",paginationDTO);
 
         return "profile";
     }
