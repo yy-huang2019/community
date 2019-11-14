@@ -4,11 +4,14 @@
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/community.js"></script>
+    <link rel="stylesheet" href="/css/editormd.css">
+    <script src="/js/editormd.min.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.css">
     <link rel="stylesheet" href="/css/community.css">
     <title>问题发布</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
 </head>
 <body style="background-color: #efefef">
 <div th:insert="~{navigation :: nav}"></div>           <!--通过insert方法将navigation头页面插入进来-->
@@ -23,12 +26,27 @@
                     <label for="title" autocomplete="off">问题标题 (简要概述): </label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题......">
                 </div>
-                <div class="form-group">
-                    <label for="description">问题补充 (请参照右侧提示): </label>
-                    <textarea class="form-control" placeholder="问题描述......" id="description" name="description" th:text="${description}"
+                <label for="description">问题补充 (请参照右侧提示): </label>
+                <div class="form-group" id="question-editor">
+
+                    <textarea class="form-control"
+                              id="description" name="description"
+                              th:text="${description}"
                               cols="30"
+                              style="display: none;"
                               rows="6"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var editor = editormd("question-editor", {
+                             width  : "100%",
+                             height : 350,
+                            path   : "/js/lib/"
+                        });
+                    });
+                </script>
+
+
                 <div class="form-group">
                     <label for="tag">添加标签 : </label>
                     <input type="text" class="form-control" id="tag" name="tag" autocomplete="off" th:value="${tag}"
