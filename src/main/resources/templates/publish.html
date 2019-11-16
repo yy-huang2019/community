@@ -38,10 +38,14 @@
                 </div>
                 <script type="text/javascript">
                     $(function() {
-                        var editor = editormd("question-editor", {
+                        editormd("question-editor", {
                              width  : "100%",
                              height : 350,
-                            path   : "/js/lib/"
+                             path   : "/js/lib/",
+                             saveHTMLToTextarea   : true,
+                             imageUpload    : true,     //是否禁用/启动加载
+                             imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                             imageUploadURL : "/file/upload"
                         });
                     });
                 </script>
