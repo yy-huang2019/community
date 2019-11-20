@@ -69,6 +69,7 @@ public class CommentService {
             if(question == null ){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            comment.setComment_count(0);
             commentMapper.insert(comment);           //插入评论入数据库
 
             //增加评论数
@@ -82,16 +83,20 @@ public class CommentService {
 
     //创建通知
     private void createNotify(Comment comment, Integer receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Integer outer_id) {
-        Notification notification = new Notification();
-        notification.setGmt_create(System.currentTimeMillis());
-        notification.setType(notificationType.getType());
-        notification.setOuter_id(outer_id);
-        notification.setNotifier(comment.getCommentator());
-        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
-        notification.setReceiver(receiver);
-        notification.setNotifier_name(notifierName);
-        notification.setOuter_title(outerTitle);
-        notificationMapper.insert(notification);
+        //如果收到通知的人和触发通知的人是同一个人，则不用触发通知
+        if(receiver == comment.getCommentator()) {
+            return;
+        }
+            Notification notification = new Notification();
+            notification.setGmt_create(System.currentTimeMillis());
+            notification.setType(notificationType.getType());
+            notification.setOuter_id(outer_id);
+            notification.setNotifier(comment.getCommentator());
+            notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+            notification.setReceiver(receiver);
+            notification.setNotifier_name(notifierName);
+            notification.setOuter_title(outerTitle);
+
     }
 
 
