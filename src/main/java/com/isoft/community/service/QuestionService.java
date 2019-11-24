@@ -27,12 +27,22 @@ public class QuestionService {
     private QuestionMapper qustionMapper;
 
     //组装Qusetion和User的中间层，当一个请求需要多个Mapper(QusetionMapper和UserMapperd组成QusetionDTO(Qusetion中多了User对象获取avatar_url))进行组装时，Service层提供相应的组装功能
-    public PaginationDTO list(Integer page, Integer size){
+    public PaginationDTO list(Integer page, Integer size ,String search){
+
+        //搜索内容
+        if (StringUtils.isNotBlank(search)) {
+            //StringUtils工具包是apache.commons.lang添加该配置文件获得的
+            String[] titles = StringUtils.split(search, " ");
+            search = Arrays.stream(titles).collect(Collectors.joining("|"));//通过java8语法将其数组后面添加上|(正则表达式的语法)
+        }
+
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;              //总页数
 
-        Integer totalCount = qustionMapper.count();     //查询到总的问题数
+        //Integer totalCount = qustionMapper.count();     //查询到总的问题数
+        Integer totalCount = qustionMapper.countBySearch(search);     //查询到想要搜索的问题数
+
 
         if (totalCount % size == 0) {             //size每一页数量,totalCount总问题数
             totalPage = totalCount / size;
@@ -55,7 +65,11 @@ public class QuestionService {
         //size*(page-1)
         Integer offset = size*(page-1);                               //offset(分隔数),page是第几页，size是每一页所占的条数
 
-        List<Question> questions = qustionMapper.List(offset , size);        //通过questionMapper的list()查到所有的Question对象
+        //<Question> questions = qustionMapper.List(offset , size);        //通过questionMapper的list()查到所有的Question对象
+
+        //搜索将问题展示出来
+        List<Question> questions = qustionMapper.SelectBySearch(search, offset, size);        //通过questionMapper的SelectBySearch()查到所有的Question对象
+
         List<QuestionDTO> QuestionDTOList = new ArrayList<>();
 
         for(Question question : questions){
@@ -69,6 +83,8 @@ public class QuestionService {
 
         return paginationDTO;
     }
+
+
 
     //个人问题页面的展示
     public PaginationDTO list(Integer user_id, Integer page, Integer size) {
@@ -169,7 +185,7 @@ public class QuestionService {
 
         //StringUtils工具包是apache.commons.lang添加该配置文件获得的
         String[] tags = StringUtils.split(questionDTO.getTag(), ",");
-        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));//通过java8语法将其数组后面添加上|
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));//通过java8语法将其数组后面添加上|(正则表达式的语法)
         Question question = new Question();
         question.setTag(regexpTag);
         String tag = question.getTag();

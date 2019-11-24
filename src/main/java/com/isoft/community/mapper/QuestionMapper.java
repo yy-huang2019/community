@@ -50,4 +50,12 @@ public interface QuestionMapper {
     @Select("select * from question where id != ${id} and tag regexp #{tag}")
     List<Question> selectRelated(@Param("tag") String tag, @Param("id") Integer id);
 
+    //查询问题
+    @Select("select count(*) from question where title regexp #{search}")
+    Integer countBySearch(@Param("search") String search);
+
+    //通过搜索将问题展示出来
+    @Select("select * from question where  title regexp #{search} order by gmt_create desc,id asc limit ${offset} , ${size}")
+    List<Question> SelectBySearch(@Param("search")String search, @Param("offset")Integer offset,@Param("size") Integer size);
+
 }

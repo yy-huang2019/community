@@ -43,26 +43,26 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${pagination.showFirstPage}">
-                        <a href="/index?page=1" aria-label="Previous">
+                        <a th:href="@{/index(page=1,search=${search})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showPrevious}">
-                        <a th:href="@{/index(page=${pagination.page - 1})}" aria-label="Previous">      <!--显示当前页数 - 1-->
+                        <a th:href="@{/index(page=${pagination.page - 1},search=${search})}" aria-label="Previous">      <!--显示当前页数 - 1-->
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
                     <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page} ? 'active' : ''">    <!--高亮显示若pagination.page=page-->
-                        <a th:href="@{/index(page=${page})}" th:text="${page}" >1             <!--显示当前页数-->
+                        <a th:href="@{/index(page=${page},search=${search})}" th:text="${page}" >1             <!--显示当前页数-->
                         </a>
                     </li>
                     <li th:if="${pagination.showNext}">
-                        <a th:href="@{/index(page=${pagination.page + 1})}" aria-label="Previous">      <!--显示当前页数 + 1-->
+                        <a th:href="@{/index(page=${pagination.page + 1},search=${search})}" aria-label="Previous">      <!--显示当前页数 + 1-->
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showEndPage}">
-                        <a th:href="@{/index(page=${pagination.totalPage})}" aria-label="Previous">
+                        <a th:href="@{/index(page=${pagination.totalPage},search=${search})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
