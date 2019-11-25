@@ -56,6 +56,6 @@ public interface QuestionMapper {
 
     //通过搜索将问题展示出来
     @Select("select * from question where  title regexp #{search} order by gmt_create desc,id asc limit ${offset} , ${size}")
-    List<Question> SelectBySearch(@Param("search")String search, @Param("offset")Integer offset,@Param("size") Integer size);
+    List<Question> selectBySearch(@Param("search")String search, @Param("offset")Integer offset, @Param("size") Integer size);
 
 }

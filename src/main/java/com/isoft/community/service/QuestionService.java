@@ -68,7 +68,7 @@ public class QuestionService {
         //<Question> questions = qustionMapper.List(offset , size);        //通过questionMapper的list()查到所有的Question对象
 
         //搜索将问题展示出来
-        List<Question> questions = qustionMapper.SelectBySearch(search, offset, size);        //通过questionMapper的SelectBySearch()查到所有的Question对象
+        List<Question> questions = qustionMapper.selectBySearch(search, offset, size);        //通过questionMapper的SelectBySearch()查到所有的Question对象
 
         List<QuestionDTO> QuestionDTOList = new ArrayList<>();
 
