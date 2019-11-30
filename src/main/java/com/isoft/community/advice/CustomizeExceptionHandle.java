@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.isoft.community.dto.ResultDTO;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.exception.CustomizeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,7 @@ import java.io.PrintWriter;
 
 //白页处理功能
 @ControllerAdvice           //(basePackageClasses = AcmeController.class)如果不声明该扫描的类则扫描所有的类
+@Slf4j
 public class CustomizeExceptionHandle {
     @ExceptionHandler(Exception.class)               //注解处理所有的exception的class
     //该方法返回值返回的是错误页面
@@ -27,6 +29,7 @@ public class CustomizeExceptionHandle {
             if (ex instanceof CustomizeException) {
                 resultDTO =  ResultDTO.errorOf((CustomizeException) ex);           //返回的是错误的json信息
             } else {
+                log.error("handle error", ex);
                 resultDTO =  ResultDTO.errorOf(CustomizeErrorCode.SYS_ERROR);      //其他的异常信息
             }
             try {
@@ -45,6 +48,7 @@ public class CustomizeExceptionHandle {
             if (ex instanceof CustomizeException) {
                 model.addAttribute("message", ex.getMessage());
             } else {
+                log.error("handle error", ex);
                 model.addAttribute("message", CustomizeErrorCode.SYS_ERROR.getMessage());
             }
             return new ModelAndView("error");     //Controller默认return的是ModelAndView,回传参数为页面，回传error页面

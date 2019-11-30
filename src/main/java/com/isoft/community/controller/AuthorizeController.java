@@ -6,6 +6,7 @@ import com.isoft.community.mapper.UserMapper;
 import com.isoft.community.model.User;
 import com.isoft.community.provider.GitHubProvider;
 import com.isoft.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Controller
+@Slf4j       //lombook自动将log注入
 public class AuthorizeController {
     @Autowired                                        //自动注入
     private GitHubProvider gitHubProvider;
@@ -69,6 +71,7 @@ public class AuthorizeController {
              response.addCookie(new Cookie("token" , token));                    //将生成的token写入cookie
              return "redirect:/index";                                                      //redirect重定向到index页面
          }else {
+             log.error("callback get github error,{}",gitHubUser);
              return "redirect:/index";                                                      //登录失败，重新登录
          }
     }

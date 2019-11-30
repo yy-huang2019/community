@@ -4,6 +4,7 @@ import com.isoft.community.dto.FileDTO;
 import com.isoft.community.exception.CustomizeErrorCode;
 import com.isoft.community.exception.CustomizeException;
 import com.isoft.community.provider.UCloudProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
+@Slf4j
 public class FileController {
 
     @Autowired
@@ -35,7 +37,7 @@ public class FileController {
             fileDTO.setUrl(fileName);
             return fileDTO;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("upload error", e);
             throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
         }
     }
