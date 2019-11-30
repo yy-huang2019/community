@@ -239,7 +239,7 @@ lombok能够达到的效果就是在源码中不需要写一些通用的方法�
 博客：https://www.cnblogs.com/holten/p/5729226.html
 
 (@Data     
-@Slf4j       //lombook自动将log注入)
+@Slf4j       //lombook自动将log注入,进行log日志的打印)
 
 
 
